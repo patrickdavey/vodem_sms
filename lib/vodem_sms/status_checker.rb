@@ -46,7 +46,7 @@ module VodemSms
         timeout: 3,
         params: {cmd: "ppp_status"},
       )
-      return Status.new(DISCONNECTED) unless response.success?
+      return Status.new(Status::DISCONNECTED) unless response.success?
 
       Status.new(JSON.parse(response.body)[STATUS_FIELD])
     end

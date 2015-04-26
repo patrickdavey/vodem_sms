@@ -1,4 +1,4 @@
-## 0.0.6 [April 2015]
+## 0.0.7 [April 2015]
 * Add a lower timeout for the connection check
 
 ## 0.0.5 [April 2015]
