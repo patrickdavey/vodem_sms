@@ -43,8 +43,11 @@ module VodemSms
           "Referer" => REFERRER_HEADER,
           Accept: "application/json"
         },
+        timeout: 3,
         params: {cmd: "ppp_status"},
       )
+      return Status.new(DISCONNECTED) unless response.success?
+
       Status.new(JSON.parse(response.body)[STATUS_FIELD])
     end
   end

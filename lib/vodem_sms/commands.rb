@@ -16,6 +16,7 @@ module VodemSms
           "Referer" => REFERRER_HEADER,
           Accept: "application/json"
         },
+        timeout: 3,
         body: {goformId: "CONNECT_NETWORK"},
       )
       sleep 10
