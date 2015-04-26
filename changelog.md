@@ -1,4 +1,4 @@
-## 0.0.2 [April 2015]
+## 0.0.3 [April 2015]
 
 * Add the ability to Read the latest SMS off the vodem
 
