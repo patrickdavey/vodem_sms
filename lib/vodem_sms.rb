@@ -9,7 +9,13 @@ module VodemSms
   class Vodem
     extend Forwardable
     def_delegators :status, :connected?, :disconnected?, :connecting?
-    def_delegators :commands, :connect!, :disconnect!
+    def_delegators :commands, :disconnect!
+
+    def connect!
+      commands.connect! and return false if disconnected?
+      status
+    end
+
 
     private
 

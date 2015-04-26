@@ -44,16 +44,24 @@ module VodemSms
     end
 
     context "commands" do
+      it "if already connected should not try to reconnect" do
+        stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
+          to_return( body: '{"ppp_status": "ppp_connected"}')
+
+        expect(vodem.connected?).to be(true)
+        expect(vodem.connect!).to be_a(VodemSms::StatusChecker::Status)
+      end
+
       it "must be able to issue a connect command" do
         stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
-          to_return({ body: '{"ppp_status": "ppp_disconnected"}' },
+          to_return(
+          { body: '{"ppp_status": "ppp_disconnected"}' }, # for the first connected call
                                  { body: '{"ppp_status": "ppp_connected"}' })
 
         stub_request(:post, "http://192.168.9.1/goform/goform_set_cmd_process").
          with(:body => "goformId=CONNECT_NETWORK").
          to_return(:status => 200, :body => "", :headers => {})
 
-        expect(vodem.connected?).to be(false)
         vodem.connect!
         expect(vodem.connected?).to be(true)
       end
