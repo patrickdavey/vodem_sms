@@ -6,8 +6,7 @@ module VodemSms
     let(:vodem) { Vodem.new }
     context "disconnected status" do
       before do
-        stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
-          to_return(status: 200, body: '{"ppp_status": "ppp_disconnected"}')
+        return_disconnected_response
       end
 
       it "must correctly setup the connection status" do
@@ -19,8 +18,7 @@ module VodemSms
 
     context "connected status" do
       before do
-        stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
-          to_return(status: 200, body: '{"ppp_status": "ppp_connected"}')
+        return_connected_response
       end
 
       it "must correctly setup the connection status" do
@@ -32,8 +30,7 @@ module VodemSms
 
     context "connecting status" do
       before do
-        stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
-          to_return(status: 200, body: '{"ppp_status": "ppp_connecting"}')
+        return_connecting_response
       end
 
       it "must correctly setup the connection status" do
@@ -45,8 +42,7 @@ module VodemSms
 
     context "commands" do
       it "if already connected should not try to reconnect" do
-        stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
-          to_return( body: '{"ppp_status": "ppp_connected"}')
+        return_connected_response
 
         expect(vodem.connected?).to be(true)
         expect(vodem.connect!).to be_a(VodemSms::StatusChecker::Status)
@@ -55,13 +51,10 @@ module VodemSms
       it "must be able to issue a connect command" do
         stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
           to_return(
-          { body: '{"ppp_status": "ppp_disconnected"}' }, # for the first connected call
-                                 { body: '{"ppp_status": "ppp_connected"}' })
+            { body: '{"ppp_status": "ppp_disconnected"}' }, # for the first connected call
+            { body: '{"ppp_status": "ppp_connected"}' })
 
-        stub_request(:post, "http://192.168.9.1/goform/goform_set_cmd_process").
-         with(:body => "goformId=CONNECT_NETWORK").
-         to_return(:status => 200, :body => "", :headers => {})
-
+        stub_connect_command
         vodem.connect!
         expect(vodem.connected?).to be(true)
       end
@@ -70,10 +63,8 @@ module VodemSms
         stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=ppp_status").
           to_return({ body: '{"ppp_status": "ppp_connected"}' },
                                  { body: '{"ppp_status": "ppp_disconnected"}' })
-        stub_request(:post, "http://192.168.9.1/goform/goform_set_cmd_process").
-         with(:body => "goformId=DISCONNECT_NETWORK").
-         to_return(:status => 200, :body => "", :headers => {})
 
+        stub_disconnect_command
         expect(vodem.connected?).to be(true)
         vodem.disconnect!
         expect(vodem.connected?).to be(false)
@@ -82,8 +73,7 @@ module VodemSms
 
     describe "messages" do
       it "must return an array containing the latest message, or an empty array" do
-       stub_request(:get, "http://192.168.9.1/goform/goform_get_cmd_process?cmd=sms_page_data&data_per_page=1&mem_store=1&order_by=order%2Bby%2Bid%2Bdesc&page=0&tags=12").
-       and_return(status: 200, body: '{"messages":[{"id":"19","number":"+64211632139","content":"00540065007300740069006E0067","tag":"1","date":"15,04,26,20,32,54,+48","draft_group_id":""}]}')
+        stub_message_command
 
         latest_message = vodem.latest_message
         expect(latest_message).to be_a(VodemSms::Messages::Message)
