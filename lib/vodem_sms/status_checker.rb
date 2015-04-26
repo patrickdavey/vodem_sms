@@ -9,6 +9,33 @@ module VodemSms
     REFERRER_HEADER = 'http://192.168.9.1/home.htm'
     STATUS_FIELD = 'ppp_status'
 
+    class Status
+      CONNECTED    = "ppp_connected"
+      DISCONNECTED = "ppp_disconnected"
+      CONNECTING   = "ppp_connecting"
+
+      def initialize(status)
+        @status = status
+      end
+
+      def connected?
+        status == CONNECTED
+      end
+
+      def disconnected?
+        status == DISCONNECTED
+      end
+
+      def connecting?
+        status == CONNECTING
+      end
+
+
+      private
+
+      attr_reader :status
+    end
+
     def get_status
       response = Typhoeus.get(
         WEBSERVER_STATUS_URL,
@@ -23,7 +50,7 @@ module VodemSms
         },
         params: {cmd: "ppp_status"},
       )
-      JSON.parse(response.body)[STATUS_FIELD]
+      Status.new(JSON.parse(response.body)[STATUS_FIELD])
     end
   end
 end
