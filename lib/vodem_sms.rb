@@ -4,7 +4,6 @@ require "vodem_sms/commands"
 require "vodem_sms/messages"
 require "vodem_sms/errors"
 require "typhoeus"
-require "pry"
 require "json"
 
 module VodemSms

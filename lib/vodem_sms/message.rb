@@ -1,5 +1,3 @@
-require 'pry'
-
 module VodemSms
   class Messages
     class Message
