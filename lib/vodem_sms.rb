@@ -1,4 +1,5 @@
 require "vodem_sms/version"
+require "vodem_sms/headers"
 require "vodem_sms/status_checker"
 require "vodem_sms/commands"
 require "vodem_sms/messages"

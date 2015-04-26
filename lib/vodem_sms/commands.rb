@@ -1,20 +1,10 @@
 module VodemSms
   class Commands
-    WEBSERVER_SET_STATUS_URL    = "http://192.168.9.1/goform/goform_set_cmd_process"
-    WEBSERVER_HOST_HEADER    = "192.168.9.1"
-    AGENT_HEADER = "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0'" 
-    LANGUAGE_HEADER= "en-US,en;q=0.5"
-    ENCODING_HEADER = 'gzip, deflate'
-    CACHE_CONTROL_HEADER = 'no-cache'
-    CONNECTION_HEADER = 'keep-alive'
-    CONTENT_TYPE_HEADER = 'application/x-www-form-urlencoded; charset=UTF-8'
-    PRAGMA_HEADER = 'no-cache'
-    X_REQUESTED_WITH_HEADER = 'XMLHttpRequest'
-    REFERRER_HEADER = 'http://192.168.9.1/home.htm'
+    include VodemSms::Headers
 
     def connect!
       Typhoeus.post(
-        WEBSERVER_SET_STATUS_URL,
+        WEBSERVER_SET_CMD_URL,
         headers: {
           Host: WEBSERVER_HOST_HEADER,
           "User-Agent" => AGENT_HEADER,
@@ -33,7 +23,7 @@ module VodemSms
 
     def disconnect!
       Typhoeus.post(
-        WEBSERVER_SET_STATUS_URL,
+        WEBSERVER_SET_CMD_URL,
         headers: {
           Host: WEBSERVER_HOST_HEADER,
           "User-Agent" => AGENT_HEADER,
