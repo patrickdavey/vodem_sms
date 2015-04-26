@@ -72,13 +72,29 @@ module VodemSms
     end
 
     describe "messages" do
-      it "must return an array containing the latest message, or an empty array" do
+      it "must return an array containing the latest message" do
         stub_message_command
 
         latest_message = vodem.latest_message
         expect(latest_message).to be_a(VodemSms::Messages::Message)
         expect(latest_message.from).to eq("+64211632139")
         expect(latest_message.content).to eq("Testing")
+      end
+
+      it "must return nil if there is no message" do
+        stub_empty_message_command
+
+        latest_message = vodem.latest_message
+        expect(latest_message).to be(nil)
+      end
+
+      it "must be possible to delete a message" do
+        stub_message_command
+        stub_delete_command
+
+        latest_message = vodem.latest_message
+        expect(latest_message).to be_a(VodemSms::Messages::Message)
+        latest_message.delete!
       end
     end
   end

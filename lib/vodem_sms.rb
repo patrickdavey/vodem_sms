@@ -7,6 +7,7 @@ require "vodem_sms/errors"
 require "typhoeus"
 require "forwardable"
 require "json"
+require "pry"
 
 module VodemSms
   class Vodem

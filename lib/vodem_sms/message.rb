@@ -12,6 +12,9 @@ module VodemSms
         set_content(message["content"])
       end
 
+      def delete!
+        VodemSms::Commands.new.delete_message(id)
+      end
 
       private
 
