@@ -1,3 +1,6 @@
+## 0.0.5 [April 2015]
+* Add the ability to delete a message
+
 ## 0.0.3 [April 2015]
 
 * Add the ability to Read the latest SMS off the vodem

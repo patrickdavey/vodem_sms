@@ -35,6 +35,17 @@ There are just a couple of commands at the moment, connect!, disconnect!.  Also 
   vodem.connect! #connect to the 3G network
   vodem.disconnect! #disconnect from the 3G network
 
+  # messages
+
+  latest_message = vodem.latest_message
+
+  message.from # mobile number it was sent from
+  message.id # id of the mobile
+  message.sent_at # DateTime timestamp of when it was sent
+  message.content # the actual text of the message.
+
+  message.delete! # delete the message off the modem
+
 ```
 
 ## Contributing
