@@ -1,3 +1,5 @@
+require "date"
+
 module VodemSms
   class Messages
     class Message
