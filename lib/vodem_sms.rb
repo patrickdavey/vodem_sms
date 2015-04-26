@@ -1,30 +1,24 @@
 require "vodem_sms/version"
 require "vodem_sms/status_checker"
+require "vodem_sms/commands"
 require "typhoeus"
 require "pry"
 require "json"
-require "forwardable"
 
 module VodemSms
   class Vodem
     extend Forwardable
     def_delegators :status, :connected?, :disconnected?, :connecting?
-
-    def initialize
-      setup
-    end
-
+    def_delegators :commands, :connect!, :disconnect!
 
     private
 
-    attr_reader :status
-
-    def setup
-      set_status
+    def status
+      StatusChecker.new.get_status
     end
 
-    def set_status
-      @status ||= StatusChecker.new.get_status
+    def commands
+      Commands.new
     end
   end
 end
