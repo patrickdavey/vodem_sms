@@ -1,3 +1,6 @@
+## 0.0.6 [April 2015]
+* Add a lower timeout for the connection check
+
 ## 0.0.5 [April 2015]
 * Add the ability to delete a message
 
