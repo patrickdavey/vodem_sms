@@ -1,5 +1,5 @@
 # VodemSms
-
+[![Code Climate](https://codeclimate.com/github/patrickdavey/vodem_sms/badges/gpa.svg)](https://codeclimate.com/github/patrickdavey/vodem_sms)
 Basic gem for interfacing with a Vodafone Dongle.  It's a huwaei one,
 so might be useful for others too.
 
